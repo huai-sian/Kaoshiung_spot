@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/kaoshiung_vue.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+    crossorigin="anonymous">
+</head>
+<body>
+    <div id='app'>
+        <header>
+            <div class="bg-img"></div>
+            <h1>高雄旅遊資訊</h1>
+            <select class="area-selector" v-model='currentLocation' @change.prevent='test'>
+                <option value="">--全部區域--</option>
+                <option :value="location"  v-for='location in locations' >{{location}}</option>
+            </select>
+          
+        </header>
+        <section style='margin-top:3rem' class='hotrank'>
+            <div class='container'>
+                <div class='row justify-content-center'>
+                    <div class='col-10'>
+                        <div class="bg-white p-3 shadow-sm">
+                            <h4 class="mb-3">熱門行政區</h4>
+                            <button class='btn px-4 btn-1' @click.prevent="currentLocation='苓雅區'">苓雅區</button>
+                            <button class='btn px-4 btn-2' @click.prevent="currentLocation='三民區'">三民區</button>
+                            <button class='btn px-4 btn-3' @click.prevent="currentLocation='新興區'">新興區</button>
+                            <button class='btn px-4 btn-4' @click.prevent="currentLocation='鳳山區'">鳳山區</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="container">
+            <div class="hr-padding">
+                <hr>
+                <div class="icon-down"></div>
+            </div>
+            <h2 class="title">{{ currentLocation }}</h2>
+            <section>
+                <div class="row">
+                    <div class='col-sm-6 mb-4' v-for="item in filterData[currentPage]">
+                        <div class='card shadow-sm border-0 h-100'>
+                            <div class='card-header p-0' style='height:155px;overflow: hidden;'>
+                                <div class='picture'>
+                                    <img :src="item.Picture1">
+                                </div>
+                                <h3>{{item.Name}}</h3>
+                                <h5>{{item.Zone}}</h5>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled mb-0">
+                                    <li class='d-flex'>
+                                        <div style='width:30px'><i class="fas fa-clock text-primary"></i></div>
+                                        {{ item.Opentime }}
+                                    </li>
+                                    <li class='d-flex'>
+                                        <div style='width:30px'><i class="fas fa-map-marker text-warning"></i></div>
+                                        {{ item.Add }}
+                                    </li>
+                                    <li class='d-flex'>
+                                        <div style='width:30px'><i class="fas fa-mobile-alt text-info"></i></div>
+                                        {{item.Tel}}
+                                    </li>
+                                    <li class='d-flex' v-if='item.Ticketinfo'>
+                                        <div style='width:30px'><i class="fas fa-ticket-alt text-success"></i></div>
+                                        {{ item.Ticketinfo}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <nav class='my-5'>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" :class="{'disabled':currentPage===0}">
+                        <a href="#" class="page-link" @click.prevent="currentPage=(currentPage-1)">Previous</a>
+                    </li>
+                    <li class="page-item" v-for='page in pages' :class="{'active':currentPage===page-1}">
+                        <a href="#" class="page-link" @click.prevent="currentPage=(page-1)">{{page}}</a>
+                    </li>
+                    <li class="page-item" :class="{'disabled':currentPage===(pages-1)}">
+                        <a href="#" class="page-link" @click.prevent="currentPage=(currentPage+1)">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="gotop" @click.prevent='scrollTop'>
+            <i class="fa fa-angle-double-up"></i>
+        </div>
+    </div>
+    <footer>
+        <p>高雄旅遊網</p>
+        <p>資料來源：高雄市政府</p>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="js/kaoshiung_vue.js"></script>
+</body>
+</html>
